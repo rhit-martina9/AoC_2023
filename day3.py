@@ -28,7 +28,7 @@ def findNumber(x, y):
             num = num*10 + int(grid[x][y+1])
             if y < len(line)-2 and grid[x][y+2].isdigit():
                 num = num*10 + int(grid[x][y+2])
-    return findNumber
+    return num
 
 def part_one():
     total = 0
