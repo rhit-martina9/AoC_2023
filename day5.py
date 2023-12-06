@@ -88,6 +88,6 @@ def part_two():
     return find_seeds([maps[-1][-1][1][1], maps[-1][-1][1][1] + 10])
 
 best = part_two()
-print("Best:", best)
+print("Best Seed:", best)
 seeds = best
 print(part_one())
