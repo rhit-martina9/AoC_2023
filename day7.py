@@ -40,10 +40,11 @@ def convert_jokers(hand):
         out[other_cards[0]] += hand["J"]
         return out
 
-def hand_ranking(hand):
+def hand_ranking(hand, wildJokers = False):
     hand = [*hand]
     hand = {i: hand.count(i) for i in set(hand)}
-    hand = convert_jokers(hand)
+    if wildJokers:
+        hand = convert_jokers(hand)
     if len(hand) == 1:
         return 6 # five of a kind
     elif len(hand) == 2:
@@ -63,7 +64,7 @@ def hand_ranking(hand):
     else:
         return 0 # high card
 
-def hand_value(hand):
+def hand_value(hand, wildJokers = False):
     hand = [*hand]
     total = 0
     for i in range(len(hand)):
@@ -74,7 +75,10 @@ def hand_value(hand):
         elif hand[i] == "Q":
             total += 12 * pow(10, 8-2*i)
         elif hand[i] == "J":
-            total += 1 * pow(10, 8-2*i)
+            if wildJokers:
+                total += 1 * pow(10, 8-2*i)
+            else:
+                total += 11 * pow(10, 8-2*i)
         elif hand[i] == "T":
             total += 10 * pow(10, 8-2*i)
         else:
@@ -82,20 +86,27 @@ def hand_value(hand):
         
     return total
 
-def solve():
+def solve(wildJokers):
     sets = {i:[] for i in range(7)}
     for bet in card_bets:
-        ranking = hand_ranking(bet)
+        ranking = hand_ranking(bet,wildJokers)
         sets[ranking].append({bet: card_bets[bet]})
 
     ranking = 1
     total = 0
     for s in sets:
-        sets[s] = sorted(sets[s], key = lambda v: hand_value(list(v.keys())[0]))
+        sets[s] = sorted(sets[s], key = lambda v: hand_value(list(v.keys())[0], wildJokers))
         for bet in sets[s]:
             total += ranking * int(bet[list(bet.keys())[0]])
             ranking += 1
     
     return total
 
-print(solve())
+def part_one():
+    return solve(False)
+
+def part_two():
+    return solve(True)
+
+print("Answer to part 1:", part_one())
+print("Answer to part 2:", part_two())
