@@ -9,20 +9,11 @@ with open("day13.txt") as file:
         else:
             input[-1].append([*line])
 
-def count_diffs(l1, l2):
-    count = 0
-    for i in range(len(l1)):
-        if l1[i] != l2[i]:
-            count += 1
-    return count
-
 def find_row_reflection(grid, diff):
     for i in range(len(grid)-1):
         count = 0
-        for j in range(i+1):
-            if j == len(grid)-i-1:
-                break
-            count += count_diffs(grid[i-j], grid[i+j+1])
+        for j in range(min(i+1, len(grid)-i-1)):
+            count += sum(1 if grid[i-j][x] != grid[i+j+1][x] else 0 for x in range(len(grid[i-j])))
         if count == diff:
             return i+1
     return 0
