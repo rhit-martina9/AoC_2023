@@ -1,18 +1,12 @@
 input = []
 
 with open("day15.txt") as file:
-    for line in file:
-        line = line.replace("\n","")
-        pair = line.split(",")
-        input = pair
-
-def hash(char, cur_value):
-    return ((ord(char) + cur_value) * 17) % 256
+    input = file.readline().split(",")
 
 def hash_value(value):
     total = 0
     for c in value:
-        total = hash(c, total)
+        total = ((ord(c) + total) * 17) % 256
     return total
 
 def part_one():
@@ -22,7 +16,7 @@ def part_one():
     return total
 
 def generate_boxes(input):
-    boxes = [[] for i in range(256)]
+    boxes = [[] for _ in range(256)]
     for line in input:
         if line[-1] == "-":
             label = line[:-1]
@@ -36,10 +30,10 @@ def generate_boxes(input):
                 if boxes[box][i][0] == label:
                     boxes[box][i][1] = line[-1]
                     found = True
+                    break
             if not found:
                 boxes[box].append([label, line[-1]])
     return boxes
-
 
 def part_two():
     boxes = generate_boxes(input)
