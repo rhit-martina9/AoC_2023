@@ -22,7 +22,7 @@ def part_one():
     return total
 
 def generate_boxes(input):
-    boxes = {i:[] for i in range(256)}
+    boxes = [[] for i in range(256)]
     for line in input:
         if line[-1] == "-":
             label = line[:-1]
