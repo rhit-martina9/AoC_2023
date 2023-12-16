@@ -1,26 +1,25 @@
 input = []
-visited = []
 
 with open("day16.txt") as file:
     for line in file:
         line = line.replace("\n","")
         input.append([*line])
 
-def expand_dir(grid, loc, dir):
+def expand_dir(visited, loc, dir):
     while True:
-        if loc[0] == -1 or loc[1] == -1 or loc[0] == len(grid) or loc[1] == len(grid[0]):
-            return
+        if loc[0] == -1 or loc[1] == -1 or loc[0] == len(input) or loc[1] == len(input[0]):
+            return visited
         if str(loc) + " " + str(dir) in visited:
-            return
+            return visited
         visited.append(str(loc) + " " + str(dir))
-        match grid[loc[0]][loc[1]]:
+        match input[loc[0]][loc[1]]:
             case "|":
                 if dir[0] == 0:
-                    expand_dir(grid, [loc[0]-1, loc[1]], [-1, 0])
+                    visited = expand_dir(visited, [loc[0]-1, loc[1]], [-1, 0])
                     dir = [1, 0]
             case "-":
                 if dir[1] == 0:
-                    expand_dir(grid, [loc[0], loc[1]-1], [0, -1])
+                    visited = expand_dir(visited, [loc[0], loc[1]-1], [0, -1])
                     dir = [0, 1]
             case "/":
                 dir = [-1*dir[1], -1*dir[0]]
@@ -33,10 +32,7 @@ def expand_dir(grid, loc, dir):
         loc[1] += dir[1]
 
 def part_one(loc, dir):
-    global visited
-    visited = []
-    expand_dir(input, loc, dir)
-    return len(set([x[:x.find("]")+1] for x in visited]))
+    return len(set([x[:x.find("]")+1] for x in expand_dir([], loc, dir)]))
 
 def part_two():
     max = -1
