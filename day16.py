@@ -48,7 +48,6 @@ def part_two():
         right = part_one([i, len(input[0])-1], [0, -1])
         if max < right:
             max = right
-        # print(i)
 
     for i in range(len(input)):
         left = part_one([0, i], [1, 0])
@@ -58,7 +57,6 @@ def part_two():
         right = part_one([len(input)-1, i], [-1, 0])
         if max < right:
             max = right
-        # print(i)
     return max
 
 print("Answer to part 1:", part_one([0,0], [0, 1]))
